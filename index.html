@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Александр Ильин — CRM-маркетолог</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:#f5f3ee;
+  color:#1a1a1a;
+  font-family:"Manrope",sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+:root{
+  --accent:#ff4d00;
+  --bg:#f5f3ee;
+  --card:#fff;
+  --border:#e0dbd0;
+  --gray:#888;
+}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:60px 24px;
+  position:relative;
+}
+.hero::before{
+  content:"";
+  position:absolute;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(255,77,0,0.08) 0%,transparent 70%);
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.envelope-wrap{
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:18px;
+  z-index:2;
+  position:relative;
+  user-select:none;
+}
+.envelope{
+  width:90px;height:90px;
+  position:relative;
+  animation:wiggle 3s ease-in-out infinite;
+}
+@keyframes wiggle{
+  0%,100%{transform:rotate(0deg)}
+  15%{transform:rotate(-7deg)}
+  30%{transform:rotate(7deg)}
+  45%{transform:rotate(-4deg)}
+  60%{transform:rotate(4deg)}
+  75%{transform:rotate(-1deg)}
+}
+.envelope svg{width:100%;height:100%}
+.badge{
+  position:absolute;
+  top:-4px;right:-4px;
+  background:var(--accent);
+  color:#fff;
+  font-family:"Unbounded",sans-serif;
+  font-size:11px;font-weight:700;
+  width:22px;height:22px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+.hero-hint{
+  font-size:12px;
+  color:var(--gray);
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  animation:blink 2s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:0.4}50%{opacity:1}}
+
+/* INLINE BUBBLE PANEL */
+.bubble-panel{
+  position:fixed;
+  top:50%;
+  right:-420px;
+  transform:translateY(-50%);
+  width:360px;
+  max-width:calc(100vw - 32px);
+  background:#fff;
+  border-radius:20px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.12);
+  padding:28px;
+  z-index:200;
+  transition:right 0.45s cubic-bezier(0.34,1.3,0.64,1);
+}
+.bubble-panel.open{
+  right:20px;
+}
+.bubble-close{
+  position:absolute;
+  top:14px;right:16px;
+  background:none;border:none;
+  font-size:18px;color:#bbb;
+  cursor:pointer;line-height:1;
+}
+.bubble-close:hover{color:#555}
+
+/* letter bubble */
+.letter-bubble-header{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:18px;
+}
+.letter-photo{
+  width:56px;height:56px;
+  border-radius:50%;
+  object-fit:cover;
+  border:3px solid var(--accent);
+  flex-shrink:0;
+}
+.letter-name{
+  font-family:"Unbounded",sans-serif;
+  font-size:15px;font-weight:700;
+  line-height:1.2;
+}
+.letter-role{
+  font-size:12px;color:var(--gray);
+  margin-top:3px;
+}
+
+/* speech bubble tail */
+.speech-bubble{
+  background:#f0ede6;
+  border-radius:18px 18px 18px 4px;
+  padding:16px 18px;
+  font-size:14px;
+  line-height:1.6;
+  color:#333;
+  position:relative;
+  margin-bottom:10px;
+}
+.speech-bubble strong{color:#1a1a1a}
+
+.bubble-scroll-hint{
+  font-size:12px;color:#bbb;
+  text-align:center;
+  margin-top:14px;
+}
+
+/* CTR pop — inline near envelope */
+.ctr-float{
+  position:fixed;
+  top:calc(50vh - 120px);
+  left:50%;
+  transform:translateX(-50%) translateY(0);
+  background:var(--accent);
+  color:#fff;
+  font-family:"Unbounded",sans-serif;
+  font-size:12px;font-weight:700;
+  padding:8px 18px;
+  border-radius:30px;
+  pointer-events:none;
+  opacity:0;
+  z-index:300;
+  transition:opacity 0.3s,transform 0.4s;
+}
+.ctr-float.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(-12px);
+}
+
+/* SECTIONS */
+.section{
+  max-width:780px;
+  margin:0 auto;
+  padding:70px 24px;
+}
+.section-label{
+  font-family:"Unbounded",sans-serif;
+  font-size:10px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:10px;
+}
+h2{
+  font-family:"Unbounded",sans-serif;
+  font-size:clamp(20px,3.5vw,28px);
+  font-weight:700;
+  line-height:1.3;
+  margin-bottom:28px;
+}
+.divider-line{
+  border:none;
+  border-top:1px solid var(--border);
+  margin:0;
+}
+
+/* WA section */
+.wa-trigger-wrap{
+  max-width:780px;
+  margin:0 auto;
+  padding:48px 24px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  cursor:pointer;
+}
+.wa-icon-btn{
+  width:72px;height:72px;
+  background:#25D366;
+  border-radius:18px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:34px;
+  flex-shrink:0;
+  box-shadow:0 4px 16px rgba(37,211,102,0.25);
+  transition:transform 0.2s;
+  position:relative;
+  animation:wiggle 3s ease-in-out infinite;
+}
+.wa-icon-btn:hover{transform:scale(1.05)}
+.wa-badge{
+  position:absolute;
+  top:-6px;right:-6px;
+  background:var(--accent);
+  color:#fff;
+  font-family:"Unbounded",sans-serif;
+  font-size:9px;font-weight:700;
+  width:20px;height:20px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+.wa-trigger-label{
+  font-size:14px;color:var(--gray);
+}
+.wa-trigger-label strong{
+  display:block;
+  font-size:15px;color:#1a1a1a;font-weight:600;
+}
+
+/* retention pop */
+.retention-pop{
+  position:absolute;
+  bottom:calc(100% + 8px);
+  left:50%;
+  transform:translateX(-50%) scale(0.8);
+  background:#25D366;
+  color:#fff;
+  font-family:"Unbounded",sans-serif;
+  font-size:10px;font-weight:700;
+  padding:5px 12px;
+  border-radius:20px;
+  white-space:nowrap;
+  opacity:0;
+  pointer-events:none;
+  transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+.retention-pop.show{
+  opacity:1;
+  transform:translateX(-50%) scale(1);
+}
+
+/* WA CHAT PANEL */
+.wa-chat-panel{
+  position:fixed;
+  top:50%;
+  left:-420px;
+  transform:translateY(-50%);
+  width:360px;
+  max-width:calc(100vw - 32px);
+  background:#ece5dd;
+  border-radius:20px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.12);
+  overflow:hidden;
+  z-index:200;
+  transition:left 0.45s cubic-bezier(0.34,1.3,0.64,1);
+}
+.wa-chat-panel.open{
+  left:20px;
+}
+.wa-chat-header{
+  background:#075e54;
+  padding:14px 16px;
+  display:flex;align-items:center;gap:10px;
+}
+.wa-chat-avatar{
+  width:36px;height:36px;
+  background:#25D366;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;
+}
+.wa-chat-name{font-family:"Manrope",sans-serif;font-size:14px;font-weight:600;color:#fff}
+.wa-chat-status{font-size:11px;color:#b2dfdb}
+.wa-chat-close{
+  margin-left:auto;
+  background:none;border:none;
+  color:rgba(255,255,255,0.6);
+  font-size:18px;cursor:pointer;
+}
+.wa-chat-body{
+  padding:16px 12px;
+  display:flex;flex-direction:column;gap:10px;
+  min-height:280px;
+  background:url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='400' height='400' fill='%23ece5dd'/%3E%3C/svg%3E");
+}
+.wa-msg{
+  max-width:82%;
+  padding:10px 14px;
+  border-radius:16px;
+  font-size:13px;line-height:1.55;
+  opacity:0;transform:translateY(8px);
+  transition:opacity 0.35s,transform 0.35s;
+}
+.wa-msg.visible{opacity:1;transform:translateY(0)}
+.wa-msg.them{
+  background:#fff;
+  color:#111;
+  border-bottom-left-radius:3px;
+  align-self:flex-start;
+  box-shadow:0 1px 2px rgba(0,0,0,0.1);
+}
+.wa-msg.me{
+  background:#dcf8c6;
+  color:#111;
+  border-bottom-right-radius:3px;
+  align-self:flex-end;
+  box-shadow:0 1px 2px rgba(0,0,0,0.1);
+}
+.wa-time{font-size:10px;color:#999;margin-top:4px;text-align:right}
+
+/* CASES */
+.cases-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+@media(max-width:580px){.cases-grid{grid-template-columns:1fr}}
+.case-card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:24px;
+  transition:border-color 0.25s,transform 0.25s;
+}
+.case-card:hover{
+  border-color:var(--accent);
+  transform:translateY(-2px);
+}
+.case-client{
+  font-family:"Unbounded",sans-serif;
+  font-size:12px;font-weight:700;
+  color:var(--accent);margin-bottom:8px;
+}
+.case-task{
+  font-size:12px;color:var(--gray);
+  margin-bottom:14px;line-height:1.5;
+}
+.metric-row{margin-bottom:8px}
+.metric-val{
+  font-family:"Unbounded",sans-serif;
+  font-size:15px;font-weight:700;
+  color:#1a1a1a;
+}
+.metric-desc{font-size:11px;color:var(--gray)}
+
+/* WHY */
+.why-list{display:flex;flex-direction:column;gap:12px}
+.why-item{
+  display:flex;gap:14px;align-items:flex-start;
+  padding:18px 20px;
+  background:#fff;
+  border-radius:14px;
+  border:1px solid var(--border);
+}
+.why-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+.why-text strong{display:block;font-weight:600;font-size:14px;margin-bottom:3px}
+.why-text span{font-size:13px;color:var(--gray);line-height:1.5}
+
+/* EXP */
+.exp-item{
+  display:flex;gap:16px;
+  padding:20px 0;
+  border-bottom:1px solid var(--border);
+}
+.exp-item:last-child{border-bottom:none}
+.exp-logo{
+  width:42px;height:42px;
+  border-radius:10px;
+  background:#f0ede6;
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:700;
+  color:var(--gray);flex-shrink:0;
+  text-align:center;line-height:1.3;
+}
+.exp-company{font-weight:600;font-size:14px;margin-bottom:1px}
+.exp-role{font-size:12px;color:var(--gray);margin-bottom:1px}
+.exp-period{font-size:11px;color:#bbb}
+
+/* WHEEL */
+.wheel-section{
+  max-width:780px;margin:0 auto;
+  padding:70px 24px;
+  text-align:center;
+}
+.wheel-container{position:relative;width:220px;height:220px;margin:0 auto}
+.wheel-pointer{
+  position:absolute;top:-14px;left:50%;
+  transform:translateX(-50%);
+  font-size:26px;z-index:2;
+}
+canvas{border-radius:50%;cursor:pointer}
+.spin-btn{
+  margin-top:28px;
+  background:var(--accent);color:#fff;
+  border:none;border-radius:40px;
+  padding:14px 36px;
+  font-family:"Unbounded",sans-serif;
+  font-size:12px;font-weight:700;
+  cursor:pointer;letter-spacing:0.04em;
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.spin-btn:hover{transform:scale(1.03);box-shadow:0 6px 24px rgba(255,77,0,0.3)}
+.spin-btn:disabled{opacity:0.45;cursor:not-allowed;transform:none;box-shadow:none}
+.wheel-result{
+  margin-top:20px;
+  font-size:14px;line-height:1.6;
+  min-height:24px;
+  opacity:0;transition:opacity 0.5s;
+}
+.wheel-result.show{opacity:1}
+.wheel-result a{color:var(--accent);font-weight:600;text-decoration:none}
+.wheel-result a:hover{text-decoration:underline}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.55s,transform 0.55s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- CTR float -->
+<div class="ctr-float" id="ctrFloat">📈 CTR</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="envelope-wrap" onclick="openLetter()">
+    <div class="envelope">
+      <div class="badge">1</div>
+      <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="90" height="90" rx="18" fill="#fff" stroke="#e0dbd0" stroke-width="1.5"/>
+        <rect x="12" y="26" width="66" height="42" rx="6" fill="#f5f3ee" stroke="#e0dbd0" stroke-width="1"/>
+        <path d="M12 32L45 54L78 32" stroke="#ff4d00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="hero-hint">Вам письмо!</div>
+  </div>
+</div>
+
+<!-- LETTER BUBBLE PANEL (slides in from right) -->
+<div class="bubble-panel" id="letterPanel">
+  <button class="bubble-close" onclick="closeLetter()">✕</button>
+  <div class="letter-bubble-header">
+    <img class="letter-photo" src="photo.jpg" alt="Александр">
+    <div>
+      <div class="letter-name">Александр Ильин</div>
+      <div class="letter-role">Начинающий CRM-маркетолог</div>
+    </div>
+  </div>
+  <div class="speech-bubble">
+    Салют!<br><br> 
+    Мой кейс не совсем стандартный: мне уже 33 и у меня более 7 лет опыта в digital.<br><br>
+    Я осознанно иду на позицию джуна в CRM-маркетинге.<br><br>
+    <strong>Ниже объясню почему. ↓</strong>
+  </div>
+  <div class="bubble-scroll-hint">листай вниз, панель не мешает</div>
+</div>
+
+<!-- WA CHAT PANEL (slides in from left) -->
+<div class="wa-chat-panel" id="waChatPanel">
+  <div class="wa-chat-header">
+    <div class="wa-chat-avatar">🟢</div>
+    <div>
+      <div class="wa-chat-name">Mindbox</div>
+      <div class="wa-chat-status">онлайн</div>
+    </div>
+    <button class="wa-chat-close" onclick="closeWaChat()">✕</button>
+  </div>
+  <div class="wa-chat-body">
+    <div class="wa-msg them" id="wm1">
+      Александр, кем вы работали ранее и почему решили сменить направление?
+      <div class="wa-time">10:04</div>
+    </div>
+    <div class="wa-msg me" id="wm2">
+      Я более 7 лет работал в SEO. Но сейчас хочу сменить направление карьеры. Основаная причина - перестал чувствовать, что приношу пользу клиентам. Во времена когда сверху идет блок из 5-8 рекламных мест, когда "быстрые ответы" от ИИ съедают трафик, а все топовые места забирают маркетплейсы и агрегаторы, польза сеошника, к сожалению, не высока
+      <div class="wa-time">10:40 ✓✓</div>
+    </div>
+    <div class="wa-msg them" id="wm3">
+      Понятно. А почему именно CRM?
+      <div class="wa-time">10:40</div>
+    </div>
+    <div class="wa-msg me" id="wm4">
+      Во-первых, мне кажется, что я неплохо умею анализировать и прогнозировать поведение пользователей, во-вторых, на этой позиции я буду чувствовать свою пользу, и в-третьих, во времена когда привлечение клиентов становится таким дорогим, ценность удержания клиентов возрастает - востребованность CRM-специалистов будет только расти
+      <div class="wa-time">10:41 ✓✓</div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- WA TRIGGER -->
+<div class="wa-trigger-wrap reveal" onclick="openWaChat()">
+  <div class="wa-icon-btn" id="waIconBtn">
+    <span>💬</span>
+    <div class="wa-badge" id="waBadge">1</div>
+    <div class="retention-pop" id="retentionPop">Retention 100%!</div>
+  </div>
+  <div class="wa-trigger-label">
+    <strong>Вам снова письмо!</strong>
+    Нажми, чтобы увидеть переписку
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- CASES -->
+<div class="section reveal">
+  <div class="section-label">Немного кейсов</div>
+  <h2>Примеры, где аналитика дала результат</h2>
+  <div class="cases-grid">
+    <div class="case-card">
+      <div class="case-client">1ЦУПИС</div>
+      <div class="case-task">UX-аудит на основе Custdev и аналитики. Разобрался почему пользователи не конвертируются — переработал коммуникацию.</div>
+      <div class="metric-row">
+        <div class="metric-val">2% → 5,2%</div>
+        <div class="metric-desc">CR в заявку — вырос в 2,6 раза</div>
+      </div>
+    </div>
+    <div class="case-card">
+     <div class="case-client">VEKA</div>
+      <div class="case-task">Метрика показала: высокий отказ, низкое время на странице. Пересобрал структуру раздела "Справочник", добавил экспертные блоки и CTA.</div>
+      <div class="metric-row">
+        <div class="metric-val">0:36 → 1:32</div>
+        <div class="metric-desc">Время на сайте выросло вдвое</div>
+      </div>
+      <div class="metric-row">
+        <div class="metric-val">72% → 46%</div>
+        <div class="metric-desc">Отказы упали</div>
+      </div>
+      <div class="metric-row">
+        <div class="metric-val">ТОП-10</div>
+        <div class="metric-desc">Большинство статей раздела</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- WHY ME -->
+<div class="section reveal">
+  <div class="section-label">Навыки</div>
+  <h2>Что умею и чем могу помочь</h2>
+  <div class="why-list">
+    <div class="why-item">
+      <div class="why-icon">📊</div>
+      <div class="why-text">
+        <strong>Аналитика</strong>
+        <span>Работал с Яндекс Метрикой и Google Analytics, делал UX-аудиты и конкруентные анализы.</span>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">🧠</div>
+      <div class="why-text">
+        <strong>Понимаю поведение пользователей</strong>
+        <span>Так как я много работал с сайтами и приложениями, то понимаю основные паттерны поведения юзеров.</span>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">✍️</div>
+      <div class="why-text">
+        <strong>Менеджмент</strong>
+        <span>Контент-планы, ТЗ копирайтерам и дизайнерам, согласование, проверка. Понимаю весь цикл от идеи до публикации.</span>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">🚀</div>
+      <div class="why-text">
+        <strong>Учусь быстро и не боюсь признавать пробелы</strong>
+        <span>Да, в CRM я начинающий. Но у меня есть база, мотивация и понимание зачем всё это — а не просто "хочу попробовать что-то новое".</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- EXP -->
+<div class="section reveal">
+  <div class="section-label">Опыт</div>
+  <h2>Где работал</h2>
+  <div class="exp-item">
+    <div class="exp-logo">MOL<br>INO<br>S</div>
+    <div>
+      <div class="exp-company">Molinos - агентство интернет-маркетинга </div>
+      <div class="exp-role">SEO-специалист · UX-аудиты · аналитика</div>
+      <div class="exp-period">5 лет</div>
+    </div>
+  </div>
+  <div class="exp-item">
+    <div class="exp-logo">PIK<br>PRO</div>
+    <div>
+      <div class="exp-company">PIK.PRO - сервис для строителей (дочка ПИК)</div>
+      <div class="exp-role">ORM-специалист · управление репутацией, PR</div>
+      <div class="exp-period">1 год</div>
+    </div>
+  </div>
+  <div class="exp-item">
+    <div class="exp-logo">ORI<br>ON</div>
+    <div>
+      <div class="exp-company">Orion Solutions - информационная безопасность</div>
+      <div class="exp-role">SEO-специалист · работа с контентом · аналитика</div>
+      <div class="exp-period">2 года</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- WHEEL -->
+<div class="wheel-section reveal">
+  <div class="section-label">Финал</div>
+  <h2>Крутани вертушку</h2>
+  <div class="wheel-container">
+    <div class="wheel-pointer">▼</div>
+    <canvas id="wheelCanvas" width="220" height="220"></canvas>
+  </div>
+  <button class="spin-btn" id="spinBtn" onclick="spinWheel()">Крутить</button>
+  <div class="wheel-result" id="wheelResult"></div>
+</div>
+
+<script>
+// LETTER
+function openLetter(){
+  document.getElementById("letterPanel").classList.add("open");
+  setTimeout(()=>{
+    const p=document.getElementById("ctrFloat");
+    p.classList.add("show");
+    setTimeout(()=>p.classList.remove("show"),2200);
+  },500);
+}
+function closeLetter(){
+  document.getElementById("letterPanel").classList.remove("open");
+}
+
+// WA CHAT
+let waChatAnimated=false;
+function openWaChat(){
+  const pop=document.getElementById("retentionPop");
+  pop.classList.add("show");
+  setTimeout(()=>{
+    pop.classList.remove("show");
+    document.getElementById("waChatPanel").classList.add("open");
+    if(!waChatAnimated){
+      waChatAnimated=true;
+      ["wm1","wm2","wm3","wm4"].forEach((id,i)=>{
+        setTimeout(()=>{
+          const el=document.getElementById(id);
+          if(el) el.classList.add("visible");
+        },i*600);
+      });
+    }
+  },900);
+}
+function closeWaChat(){
+  document.getElementById("waChatPanel").classList.remove("open");
+}
+
+// SCROLL REVEAL
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add("visible")});
+},{threshold:0.12});
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+
+// WHEEL
+const canvas=document.getElementById("wheelCanvas");
+const ctx=canvas.getContext("2d");
+const segs=["🎯","⭐","🚀","💡","🎁","🔥","✨","🎪"];
+const cols=["#ff4d00","#f0ede6","#ff6b2b","#e8e4dc","#ff4d00","#f5f0e8","#ff5500","#ede8e0"];
+const txtCols=["#fff","#555","#fff","#555","#fff","#555","#fff","#555"];
+const n=segs.length;
+let angle=0,spinning=false;
+
+function drawWheel(rot){
+  ctx.clearRect(0,0,220,220);
+  const cx=110,cy=110,r=105;
+  for(let i=0;i<n;i++){
+    const s=rot+(i/n)*Math.PI*2;
+    const e=rot+((i+1)/n)*Math.PI*2;
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,r,s,e);
+    ctx.closePath();
+    ctx.fillStyle=cols[i];
+    ctx.fill();
+    ctx.strokeStyle="#f5f3ee";
+    ctx.lineWidth=2;
+    ctx.stroke();
+    ctx.save();
+    ctx.translate(cx,cy);
+    ctx.rotate(rot+(i+0.5)/n*Math.PI*2);
+    ctx.textAlign="right";
+    ctx.font="20px serif";
+    ctx.fillText(segs[i],r-16,7);
+    ctx.restore();
+  }
+  ctx.beginPath();
+  ctx.arc(cx,cy,16,0,Math.PI*2);
+  ctx.fillStyle="#ff4d00";
+  ctx.fill();
+  ctx.strokeStyle="#f5f3ee";
+  ctx.lineWidth=3;
+  ctx.stroke();
+}
+drawWheel(0);
+
+function spinWheel(){
+  if(spinning)return;
+  spinning=true;
+  document.getElementById("spinBtn").disabled=true;
+  document.getElementById("wheelResult").classList.remove("show");
+  const extra=(Math.random()*2+6)*Math.PI*2;
+  const dur=3400;
+  const start=performance.now();
+  const startA=angle;
+  function ease(t){return t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
+  function frame(now){
+    const t=Math.min((now-start)/dur,1);
+    angle=startA+extra*ease(t);
+    drawWheel(angle);
+    if(t<1){requestAnimationFrame(frame)}
+    else{
+      spinning=false;
+      document.getElementById("spinBtn").disabled=false;
+      const r=document.getElementById("wheelResult");
+      r.innerHTML='Ура! Поздравляем, вы выиграли контакты этого кандидата 🎉<br><a href="https://t.me/alexilinw" target="_blank">TG @alexilinw</a>';
+      r.classList.add("show");
+    }
+  }
+  requestAnimationFrame(frame);
+}
+</script>
+</body>
+</html>
